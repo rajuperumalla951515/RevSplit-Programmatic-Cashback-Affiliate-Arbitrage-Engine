@@ -3,9 +3,9 @@ import urllib.parse
 from typing import Dict, Any
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
-from app.redis_client import store_click_session
-from app.kafka_client import publish_event
-from app.config import settings
+from app.core.redis_client import store_click_session
+from app.core.kafka_client import publish_event
+from app.core.config import settings
 
 
 def generate_sub_id() -> str:

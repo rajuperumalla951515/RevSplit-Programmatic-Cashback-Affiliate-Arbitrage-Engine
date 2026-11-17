@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, HttpUrl
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.database import get_db_session
+from app.core.database import get_db_session
 from app.services.click_service import create_affiliate_link
-from app.redis_client import get_click_session
+from app.core.redis_client import get_click_session
 
 router = APIRouter(tags=["Click Tracking & Link Routing"])
 

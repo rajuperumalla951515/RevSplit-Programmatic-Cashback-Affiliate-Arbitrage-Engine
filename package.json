@@ -6,7 +6,13 @@
   "scripts": {
     "install:all": "npm --prefix frontend install && npm --prefix webhook_service install && npm --prefix telegram_bot install",
     "dev": "concurrently -p \"[{name}]\" -c \"cyan,green,yellow,magenta\" \"npm --prefix frontend run dev\" \"npm --prefix webhook_service run start\" \"npm --prefix telegram_bot run start\" \"uvicorn app.main:app --app-dir backend --reload --port 8000\"",
-    "docker": "docker compose up -d --build"
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:webhook": "npm --prefix webhook_service run start",
+    "dev:telegram": "npm --prefix telegram_bot run start",
+    "dev:backend": "uvicorn app.main:app --app-dir backend --reload --port 8000",
+    "docker": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

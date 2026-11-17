@@ -6,11 +6,11 @@ from fastapi import APIRouter, Depends, HTTPException, Header, Request, status
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
-from app.database import get_db_session
-from app.redis_client import check_and_set_webhook_idempotency
-from app.kafka_client import publish_event
+from app.core.database import get_db_session
+from app.core.redis_client import check_and_set_webhook_idempotency
+from app.core.kafka_client import publish_event
 from app.services.ledger_service import settle_commission_postback
-from app.config import settings
+from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 

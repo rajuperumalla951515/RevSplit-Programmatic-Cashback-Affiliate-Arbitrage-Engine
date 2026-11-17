@@ -2,9 +2,9 @@ import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import settings
-from app.redis_client import init_redis, close_redis
-from app.kafka_client import init_kafka, close_kafka
+from app.core.config import settings
+from app.core.redis_client import init_redis, close_redis
+from app.core.kafka_client import init_kafka, close_kafka
 from app.routers import click_router, webhook_router
 from app.agents import router as agents_router
 
