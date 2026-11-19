@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, HttpUrl
@@ -24,10 +25,10 @@ class LinkGenerationResponse(BaseModel):
 @router.post("/api/v1/links/generate", response_model=LinkGenerationResponse, status_code=status.HTTP_201_CREATED)
 async def generate_monetized_link(
     request: LinkGenerationRequest,
-    db: AsyncSession = Depends(get_db_session)
+    db: Optional[AsyncSession] = Depends(get_db_session)
 ):
     """
-    Step 3 Endpoint: Accepts product link, tokenizes sub_id, stores session in Redis,
+    Step 3 Endpoint: Accepts product link, tokenizes sub_id, stores session in Redis / Cache,
     and publishes telemetry event to Kafka.
     """
     try:
@@ -47,7 +48,7 @@ async def generate_monetized_link(
 @router.get("/r/{sub_id}", response_class=RedirectResponse)
 async def perform_click_redirect(sub_id: str, request: Request):
     """
-    Step 3 Sub-10ms Outbound Gateway: Fetches dynamic URL from Redis cache
+    Step 3 Sub-10ms Outbound Gateway: Fetches dynamic URL from Redis/memory cache
     and issues an immediate HTTP 302 redirect.
     """
     session_data = await get_click_session(sub_id)

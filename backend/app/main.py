@@ -5,8 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.redis_client import init_redis, close_redis
 from app.core.kafka_client import init_kafka, close_kafka
-from app.routers import click_router, webhook_router
-from app.agents import router as agents_router
+from app.routers import api_router
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("revsplit")
@@ -40,10 +39,25 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include Service Routers
-app.include_router(click_router.router)
-app.include_router(webhook_router.router)
-app.include_router(agents_router.router)
+# Include Centralized API Router
+app.include_router(api_router)
+
+
+@app.get("/", tags=["System"])
+async def root():
+    return {
+        "status": "ONLINE",
+        "engine": settings.PROJECT_NAME,
+        "version": "1.0.0",
+        "docs_url": "/docs",
+        "endpoints": {
+            "health": "/health",
+            "generate_link": "/api/v1/links/generate",
+            "redirect_gateway": "/r/{sub_id}",
+            "webhook_postback": "/api/v1/webhooks/postback",
+            "agents_execute": "/api/v1/agents/execute",
+        }
+    }
 
 
 @app.get("/health", tags=["System"])

@@ -25,7 +25,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home'); // 'home', 'converter', 'ledger', 'ai_agents', 'webhook'
@@ -122,6 +122,7 @@ export default function App() {
       if (res.ok) {
         setGeneratedLink(data);
         setSubId(data.sub_id);
+        setActiveTab('converter');
       } else {
         alert(data.detail || 'Link generation failed');
       }
